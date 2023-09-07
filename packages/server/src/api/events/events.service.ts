@@ -512,7 +512,7 @@ export class EventsService {
         await this.EventModel.create({
           ...eventDto,
           ownerId: account.id,
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
         });
       }
 

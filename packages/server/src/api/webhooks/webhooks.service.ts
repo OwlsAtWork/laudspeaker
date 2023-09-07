@@ -228,7 +228,7 @@ export class WebhooksService {
         event: this.sendgridEventsMap[event] || event,
         eventProvider: ClickHouseEventProvider.SENDGRID,
         processed: false,
-        createdAt: new Date().toUTCString(),
+        createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
       };
 
       messagesToInsert.push(clickHouseRecord);
@@ -267,7 +267,7 @@ export class WebhooksService {
       event: SmsStatus,
       eventProvider: ClickHouseEventProvider.TWILIO,
       processed: false,
-      createdAt: new Date().toUTCString(),
+      createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
     };
     await this.insertClickHouseMessages([clickHouseRecord]);
   }
@@ -335,7 +335,7 @@ export class WebhooksService {
       event: event,
       eventProvider: ClickHouseEventProvider.MAILGUN,
       processed: false,
-      createdAt: new Date().toUTCString(),
+      createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
     };
 
     this.debug(

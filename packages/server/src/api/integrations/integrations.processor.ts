@@ -85,7 +85,7 @@ export class IntegrationsProcessor extends WorkerHost {
 
     await this.databasesRepository.save({
       id: integration.database.id,
-      lastSync: new Date().toUTCString(),
+      lastSync: new Date().toISOString().split('.')[0].replace('T', ' '),
     });
   }
 

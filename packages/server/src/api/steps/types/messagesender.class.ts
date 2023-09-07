@@ -180,7 +180,7 @@ export class MessageSender {
       return [
         {
           stepId: stepID,
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
           customerId: customerID,
           event: 'error',
           eventProvider: eventProvider,
@@ -219,7 +219,7 @@ export class MessageSender {
         ret = [
           {
             stepId: stepID,
-            createdAt: new Date().toUTCString(),
+            createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
             customerId: customerID,
             event: 'sent',
             eventProvider: ClickHouseEventProvider.SENDGRID,
@@ -249,7 +249,7 @@ export class MessageSender {
         ret = [
           {
             stepId: stepID,
-            createdAt: new Date().toUTCString(),
+            createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
             customerId: customerID,
             event: 'sent',
             eventProvider: ClickHouseEventProvider.MAILGUN,
@@ -326,7 +326,7 @@ export class MessageSender {
       return [
         {
           stepId: stepID,
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
           customerId: customerID,
           event: 'error',
           eventProvider: ClickHouseEventProvider.TWILIO,
@@ -347,7 +347,7 @@ export class MessageSender {
     ret = [
       {
         stepId: stepID,
-        createdAt: new Date().toUTCString(),
+        createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
         customerId: customerID,
         event: 'sent',
         eventProvider: ClickHouseEventProvider.TWILIO,
@@ -420,7 +420,7 @@ export class MessageSender {
         {
           userId: accountID,
           event: 'error',
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
           eventProvider: ClickHouseEventProvider.FIREBASE,
           messageId: null,
           stepId: stepID,
@@ -446,7 +446,7 @@ export class MessageSender {
           {
             userId: accountID,
             event: 'error',
-            createdAt: new Date().toUTCString(),
+            createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
             eventProvider: ClickHouseEventProvider.FIREBASE,
             messageId: null,
             stepId: stepID,
@@ -485,7 +485,7 @@ export class MessageSender {
       {
         stepId: stepID,
         customerId: customerID,
-        createdAt: new Date().toUTCString(),
+        createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
         event: 'sent',
         eventProvider: ClickHouseEventProvider.FIREBASE,
         messageId: messageId,
@@ -543,7 +543,7 @@ export class MessageSender {
         {
           userId: accountID,
           event: 'sent',
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
           eventProvider: ClickHouseEventProvider.SLACK,
           messageId: String(message.ts),
           stepId: stepID,
@@ -557,7 +557,7 @@ export class MessageSender {
         {
           userId: accountID,
           event: 'error',
-          createdAt: new Date().toUTCString(),
+          createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
           eventProvider: ClickHouseEventProvider.SLACK,
           messageId: '',
           stepId: stepID,
