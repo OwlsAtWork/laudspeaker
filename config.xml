@@ -1,0 +1,64 @@
+<yandex>
+    <logger>
+        <level>trace</level>
+        <console>true</console>
+        <file>/var/log/clickhouse-server/clickhouse-server.log</file>
+    </logger>
+
+    <tcp_port>9000</tcp_port>
+    <tcp_port_secure>9440</tcp_port_secure>
+    <path>/var/lib/clickhouse/</path>
+    <tmp_path>/var/lib/clickhouse/tmp/</tmp_path>
+    <user_files_path>/var/lib/clickhouse/user_files/</user_files_path>
+    <http_port>8123</http_port>
+    <listen_host>::</listen_host>
+    <max_connections>900</max_connections>
+
+    <query_log>
+        <database>system</database>
+        <table>query_log</table>
+        <flush_interval_milliseconds>750</flush_interval_milliseconds>
+        <max_size>1000000</max_size>
+        <max_part_size>10000000</max_part_size>
+        <remove_old_parts_interval>3600</remove_old_parts_interval>
+    </query_log>
+
+    <part_log>
+        <database>system</database>
+        <table>part_log</table>
+        <flush_interval_milliseconds>750</flush_interval_milliseconds>
+        <max_size>1000000</max_size>
+        <max_part_size>10000000</max_part_size>
+        <remove_old_parts_interval>3600</remove_old_parts_interval>
+    </part_log>
+
+    <trace_log>
+        <database>system</database>
+        <table>trace_log</table>
+        <flush_interval_milliseconds>750</flush_interval_milliseconds>
+        <max_size>1000000</max_size>
+        <max_part_size>10000000</max_part_size>
+        <remove_old_parts_interval>3600</remove_old_parts_interval>
+    </trace_log>
+
+    <metric_log>
+        <database>system</database>
+        <table>metric_log</table>
+        <flush_interval_milliseconds>750</flush_interval_milliseconds>
+        <max_size>1000000</max_size>
+        <max_part_size>10000000</max_part_size>
+        <remove_old_parts_interval>3600</remove_old_parts_interval>
+    </metric_log>
+
+    <query_thread_log>
+        <database>system</database>
+        <table>query_thread_log</table>
+        <flush_interval_milliseconds>750</flush_interval_milliseconds>
+        <max_size>1000000</max_size>
+        <max_part_size>10000000</max_part_size>
+        <remove_old_parts_interval>3600</remove_old_parts_interval>
+    </query_thread_log>
+
+    <dictionaries_config>/etc/clickhouse-server/dicts-config.xml</dictionaries_config>
+    <distributed_ddl>1</distributed_ddl>
+</yandex>

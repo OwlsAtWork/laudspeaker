@@ -7,6 +7,7 @@ import { AppModule } from './app.module';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { urlencoded } from 'body-parser';
 import { readFileSync } from 'fs';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 const morgan = require('morgan');
 
 async function bootstrap() {
@@ -24,6 +25,15 @@ async function bootstrap() {
     rawBody: true,
     httpsOptions: parseInt(process.env.PORT) == 443 ? httpsOptions : undefined,
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
   const port: number = parseInt(process.env.PORT);
 
   const rawBodyBuffer = (req, res, buf, encoding) => {

@@ -22,12 +22,14 @@ import { RequestResetPasswordDto } from './dto/request-reset-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { randomUUID } from 'crypto';
+import { DataSource } from 'typeorm';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     @Inject(AuthService)
     public readonly service: AuthService,
+    private dataSource: DataSource,
     @Inject(WINSTON_MODULE_NEST_PROVIDER)
     private readonly logger: Logger
   ) {}
@@ -181,9 +183,12 @@ export class AuthController {
       (<Account>user).id
     );
     try {
+      const queryRunner = await this.dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
       return await this.service.requestVerification(
         <Account>user,
-        undefined,
+        queryRunner,
         session
       );
     } catch (e) {

@@ -179,7 +179,7 @@ export class WebhooksProcessor extends WorkerHost {
         await this.webhooksService.insertClickHouseMessages([
           {
             event: 'error',
-            createdAt: new Date().toUTCString(),
+            createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
             eventProvider: ClickHouseEventProvider.WEBHOOKS,
             messageId: '',
             audienceId: job.data.audienceId,
@@ -199,7 +199,7 @@ export class WebhooksProcessor extends WorkerHost {
         await this.webhooksService.insertClickHouseMessages([
           {
             event: 'sent',
-            createdAt: new Date().toUTCString(),
+            createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
             eventProvider: ClickHouseEventProvider.WEBHOOKS,
             messageId: '',
             audienceId: job.data.audienceId,

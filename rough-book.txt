@@ -1,0 +1,13 @@
+to run other services:
+docker compose up
+
+> docker exec -it laudspeaker-clickhouse-1 /bin.bash
+> clickhouse-client
+
+client:
+docker build -t laudspeaker-web -f Dockerfile.dev.client . 
+docker run -d --name laudspeaker-web-app -p 3002:80 laudspeaker-web:latest
+
+server:
+docker build -t laudspeaker-server -f Dockerfile.dev.server .
+docker run -d --name laudspeaker-server-app --net=laudspeaker_default -p 3001:3001 laudspeaker-server:latest

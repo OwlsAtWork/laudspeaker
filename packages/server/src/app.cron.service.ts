@@ -637,7 +637,7 @@ export class CronService {
                       messageId: rowObject.messageId,
                       event: message.status,
                       eventProvider: ClickHouseEventProvider.TWILIO,
-                      createdAt: new Date().toUTCString(),
+                      createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
                       userId: accounts[j].id,
                       processed: false,
                     };
@@ -744,7 +744,7 @@ export class CronService {
                       messageId: rowObject.messageId,
                       event: message.status,
                       eventProvider: ClickHouseEventProvider.TWILIO,
-                      createdAt: new Date().toUTCString(),
+                      createdAt: new Date().toISOString().split('.')[0].replace('T', ' '),
                       userId: accounts[j].id,
                       processed: false,
                     };

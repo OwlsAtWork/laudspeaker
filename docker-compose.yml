@@ -17,7 +17,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
       POSTGRES_DB: laudspeaker
     ports:
-      - "5432:5432"
+      - "5434:5432"
     restart: unless-stopped
     networks:
       - laudspeaker_default
@@ -38,8 +38,8 @@ services:
     image: clickhouse/clickhouse-server:latest
     restart: on-failure
     ports:
-      - "8123:8123"
-      - "9000:9000"
+      - 8123:8123
+      - 9000:9000
     networks:
       - laudspeaker_default
 
