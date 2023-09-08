@@ -1,28 +1,31 @@
-import {
-  Injectable,
-  Inject,
-  Logger,
-  HttpException,
-  forwardRef,
-} from '@nestjs/common';
+import
+  {
+    Injectable,
+    Inject,
+    Logger,
+    HttpException,
+    forwardRef,
+  } from '@nestjs/common';
 import { Correlation, CustomersService } from '../customers/customers.service';
 import { CustomerDocument } from '../customers/schemas/customer.schema';
-import {
-  EventsTable,
-  CustomEventTable,
-  JobTypes,
-} from './interfaces/event.interface';
+import
+  {
+    EventsTable,
+    CustomEventTable,
+    JobTypes,
+  } from './interfaces/event.interface';
 import { Account } from '../accounts/entities/accounts.entity';
 import { PosthogBatchEventDto } from './dto/posthog-batch-event.dto';
 import { EventDto } from './dto/event.dto';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { StatusJobDto } from './dto/status-event.dto';
-import {
-  Processor,
-  WorkerHost,
-  OnWorkerEvent,
-  InjectQueue,
-} from '@nestjs/bullmq';
+import
+  {
+    Processor,
+    WorkerHost,
+    OnWorkerEvent,
+    InjectQueue,
+  } from '@nestjs/bullmq';
 import { Job, Queue, UnrecoverableError } from 'bullmq';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -33,21 +36,24 @@ import { attributeConditions } from '../../fixtures/attributeConditions';
 import keyTypes from '../../fixtures/keyTypes';
 import { PostHogEventDto } from './dto/posthog-event.dto';
 import defaultEventKeys from '../../fixtures/defaultEventKeys';
-import {
-  PosthogEventType,
-  PosthogEventTypeDocument,
-} from './schemas/posthog-event-type.schema';
+import
+  {
+    PosthogEventType,
+    PosthogEventTypeDocument,
+  } from './schemas/posthog-event-type.schema';
 import { DataSource } from 'typeorm';
 import posthogEventMappings from '../../fixtures/posthogEventMappings';
-import {
-  PosthogEvent,
-  PosthogEventDocument,
-} from './schemas/posthog-event.schema';
+import
+  {
+    PosthogEvent,
+    PosthogEventDocument,
+  } from './schemas/posthog-event.schema';
 import { JourneysService } from '../journeys/journeys.service';
 import { Journey } from '../journeys/entities/journey.entity';
 
 @Injectable()
-export class EventsService {
+export class EventsService
+{
   constructor(
     private dataSource: DataSource,
     @Inject(forwardRef(() => CustomersService))
@@ -73,9 +79,12 @@ export class EventsService {
     @InjectQueue('webhooks') private readonly webhooksQueue: Queue,
     @Inject(forwardRef(() => JourneysService))
     private readonly journeysService: JourneysService
-  ) {
-    for (const { name, property_type } of defaultEventKeys) {
-      if (name && property_type) {
+  )
+  {
+    for (const { name, property_type } of defaultEventKeys)
+    {
+      if (name && property_type)
+      {
         this.EventKeysModel.updateOne(
           { key: name },
           {
@@ -88,8 +97,10 @@ export class EventsService {
         ).exec();
       }
     }
-    for (const { name, displayName, type, event } of posthogEventMappings) {
-      if (name && displayName && type && event) {
+    for (const { name, displayName, type, event } of posthogEventMappings)
+    {
+      if (name && displayName && type && event)
+      {
         this.PosthogEventTypeModel.updateOne(
           { name: name },
           {
@@ -105,7 +116,8 @@ export class EventsService {
     }
   }
 
-  log(message, method, session, user = 'ANONYMOUS') {
+  log(message, method, session, user = 'ANONYMOUS')
+  {
     this.logger.log(
       message,
       JSON.stringify({
@@ -116,7 +128,8 @@ export class EventsService {
       })
     );
   }
-  debug(message, method, session, user = 'ANONYMOUS') {
+  debug(message, method, session, user = 'ANONYMOUS')
+  {
     this.logger.debug(
       message,
       JSON.stringify({
@@ -127,7 +140,8 @@ export class EventsService {
       })
     );
   }
-  warn(message, method, session, user = 'ANONYMOUS') {
+  warn(message, method, session, user = 'ANONYMOUS')
+  {
     this.logger.warn(
       message,
       JSON.stringify({
@@ -138,7 +152,8 @@ export class EventsService {
       })
     );
   }
-  error(error, method, session, user = 'ANONYMOUS') {
+  error(error, method, session, user = 'ANONYMOUS')
+  {
     this.logger.error(
       error.message,
       error.stack,
@@ -152,7 +167,8 @@ export class EventsService {
       })
     );
   }
-  verbose(message, method, session, user = 'ANONYMOUS') {
+  verbose(message, method, session, user = 'ANONYMOUS')
+  {
     this.logger.verbose(
       message,
       JSON.stringify({
@@ -167,7 +183,8 @@ export class EventsService {
   async correlate(
     account: Account,
     ev: EventsTable
-  ): Promise<CustomerDocument> {
+  ): Promise<CustomerDocument>
+  {
     return this.customersService.findByExternalIdOrCreate(
       account,
       ev.userId ? ev.userId : ev.anonymousId
@@ -177,11 +194,13 @@ export class EventsService {
   async correlateCustomEvent(
     account: Account,
     ev: CustomEventTable
-  ): Promise<Correlation> {
+  ): Promise<Correlation>
+  {
     return this.customersService.findByCustomEvent(account, ev.slackId);
   }
 
-  async getJobStatus(body: StatusJobDto, type: JobTypes, session: string) {
+  async getJobStatus(body: StatusJobDto, type: JobTypes, session: string)
+  {
     const jobQueues = {
       [JobTypes.email]: this.messageQueue,
       [JobTypes.slack]: this.slackQueue,
@@ -189,11 +208,13 @@ export class EventsService {
       [JobTypes.webhooks]: this.webhooksQueue,
     };
 
-    try {
+    try
+    {
       const job = await jobQueues[type].getJob(body.jobId);
       const state = await job.getState();
       return state;
-    } catch (err) {
+    } catch (err)
+    {
       this.logger.error(`Error getting ${type} job status: ` + err);
       throw new HttpException(`Error getting ${type} job status`, 503);
     }
@@ -203,13 +224,15 @@ export class EventsService {
     account: Account,
     eventDto: PosthogBatchEventDto,
     session: string
-  ) {
+  )
+  {
     let err: any;
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
-    try {
+    try
+    {
       await queryRunner.manager.save(Account, {
         id: account.id,
         posthogSetupped: true,
@@ -225,7 +248,8 @@ export class EventsService {
         let numEvent = 0;
         numEvent < chronologicalEvents.length;
         numEvent++
-      ) {
+      )
+      {
         await this.eventPreprocessorQueue.add(
           'posthog',
           {
@@ -239,16 +263,19 @@ export class EventsService {
           }
         );
       }
-    } catch (e) {
+    } catch (e)
+    {
       await queryRunner.rollbackTransaction();
       err = e;
-    } finally {
+    } finally
+    {
       await queryRunner.release();
       if (err) throw err;
     }
   }
 
-  async customPayload(account: Account, eventDto: EventDto, session: string) {
+  async customPayload(account: Account, eventDto: EventDto, session: string)
+  {
     await this.eventPreprocessorQueue.add('laudspeaker', {
       account: account,
       event: eventDto,
@@ -256,9 +283,11 @@ export class EventsService {
     });
   }
 
-  async getOrUpdateAttributes(resourceId: string, session: string) {
+  async getOrUpdateAttributes(resourceId: string, session: string)
+  {
     const attributes = await this.EventKeysModel.find().exec();
-    if (resourceId === 'attributes') {
+    if (resourceId === 'attributes')
+    {
       return {
         id: resourceId,
         nextResourceURL: 'attributeConditions',
@@ -291,7 +320,8 @@ export class EventsService {
     ownerId: string,
     session: string,
     providerSpecific?: string
-  ) {
+  )
+  {
     const attributes = await this.EventKeysModel.find({
       $and: [
         { key: RegExp(`.*${resourceId}.*`, 'i') },
@@ -308,7 +338,8 @@ export class EventsService {
     }));
   }
 
-  async getPossibleTypes(session: string) {
+  async getPossibleTypes(session: string)
+  {
     return keyTypes;
   }
 
@@ -316,11 +347,13 @@ export class EventsService {
     type: string,
     session: string,
     isArray = false
-  ) {
+  )
+  {
     return attributeConditions(type, isArray);
   }
 
-  async getPossibleValues(key: string, search: string, session: string) {
+  async getPossibleValues(key: string, search: string, session: string)
+  {
     const searchRegExp = new RegExp(`.*${search}.*`, 'i');
     const docs = await this.EventModel.aggregate([
       { $match: { [`event.${key}`]: searchRegExp } },
@@ -330,7 +363,8 @@ export class EventsService {
     return docs.map((doc) => doc?.['event']?.[key]).filter((item) => item);
   }
 
-  async getPossiblePosthogTypes(ownerId: string, session: string, search = '') {
+  async getPossiblePosthogTypes(ownerId: string, session: string, search = '')
+  {
     const searchRegExp = new RegExp(`.*${search}.*`, 'i');
     // TODO: need to recheck, filtering not working in a correct way
     const types = await this.PosthogEventTypeModel.find({
@@ -348,7 +382,8 @@ export class EventsService {
     take = 100,
     skip = 0,
     search = ''
-  ) {
+  )
+  {
     const searchRegExp = new RegExp(`.*${search}.*`, 'i');
 
     const totalPages =
