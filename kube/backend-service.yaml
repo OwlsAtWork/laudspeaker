@@ -8,10 +8,10 @@ metadata:
     io.kompose.service: backend
   name: backend
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - name: "3001"
-      port: 3001
+      port: 80
       targetPort: 3001
   selector:
     io.kompose.service: backend

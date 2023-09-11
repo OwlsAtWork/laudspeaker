@@ -23,7 +23,7 @@ spec:
         io.kompose.service: backend
     spec:
       containers:
-        - image: pratikbambonebyzero/laudspeaker-server:one-by-zero
+        - image: kulnigam/laudspeaker-server:one-by-zero-v1
           name: backend
           ports:
             - containerPort: 3001
@@ -34,7 +34,7 @@ spec:
             - name: NODE_ENV
               value: development
             - name: FRONTEND_URL
-              value: "frontend:3000"
+              value: "campaign.digico.onebyzero.ai"
             - name: DATABASE_HOST
               value: tivala-database.c29m5x5olfsr.ap-southeast-1.rds.amazonaws.com
             - name: DATABASE_NAME
