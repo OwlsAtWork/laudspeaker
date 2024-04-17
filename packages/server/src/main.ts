@@ -21,18 +21,18 @@ const morgan = require('morgan');
 
 const numCPUs = os.cpus().length;
 
-if (cluster.isPrimary) {
-  console.log(`Primary ${process.pid} is running`);
+// if (cluster.isPrimary) {
+//   console.log(`Primary ${process.pid} is running`);
 
-  // Fork workers.
-  for (let i = 0; i < numCPUs; i++) {
-    cluster.fork();
-  }
+//   // Fork workers.
+//   for (let i = 0; i < numCPUs; i++) {
+//     cluster.fork();
+//   }
 
-  cluster.on('exit', (worker, code, signal) => {
-    console.log(`worker ${worker.process.pid} died`);
-  });
-} else {
+//   cluster.on('exit', (worker, code, signal) => {
+//     console.log(`worker ${worker.process.pid} died`);
+//   });
+// } else {
   const expressApp = express();
 
   Sentry.init({
@@ -191,4 +191,4 @@ if (cluster.isPrimary) {
   }
 
   bootstrap();
-}
+// }

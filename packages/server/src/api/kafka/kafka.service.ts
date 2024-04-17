@@ -10,7 +10,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 @Injectable()
 export class KafkaService {
-  private KAFKA_BROKERS = process.env.KAFKA_BROKERS.split(','); // Pass brokers as comma separated list
+  private KAFKA_BROKERS = process.env.KAFKA_BROKERS_LIST.split(','); // Pass brokers as comma separated list ['kafka1:19092'] //
   private KAFKA_SASL_USERNAME = process.env.KAFKA_SASL_USERNAME; // Confluent cluster API key
   private KAFKA_SASL_PASSWORD = process.env.KAFKA_SASL_PASSWORD; // Confluent cluster API secret
   private KAFKA_SSL = !!this.KAFKA_SASL_PASSWORD && !!this.KAFKA_SASL_USERNAME; // SSL set when SASL user/pass given

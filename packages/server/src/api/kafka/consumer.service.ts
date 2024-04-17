@@ -17,7 +17,7 @@ import { KafkaService } from './kafka.service';
 
 @Injectable()
 export class KafkaConsumerService implements OnModuleDestroy {
-  private KAFKA_BROKERS = process.env.KAFKA_BROKERS.split(',');
+  private KAFKA_BROKERS = process.env.KAFKA_BROKERS_LIST.split(','); //['kafka1:19092']; //
   // Create the client with the broker list
 
   private readonly consumers: Consumer[] = [];

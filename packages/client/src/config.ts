@@ -25,7 +25,7 @@ class Config {
 
   defaultConfig: { [key: string]: any } = {
     [POSTHOG_KEY_KEY]: "",
-    [API_BASE_URL_KEY]: "https://api.laudspeaker.com",
+    [API_BASE_URL_KEY]: process.env.REACT_APP_API_BASE_URL,
     [SENTRY_DSN_URL_FRONTEND_KEY]:
       process.env.REACT_APP_SENTRY_DSN_URL_FRONTEND,
     [SENTRY_RELEASE_KEY]: process.env.REACT_APP_SENTRY_RELEASE,

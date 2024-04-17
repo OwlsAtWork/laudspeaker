@@ -279,7 +279,7 @@ const RouteComponent: React.FC = () => {
   }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/campaign">
       <Routes>
         <Route
           path="/login"

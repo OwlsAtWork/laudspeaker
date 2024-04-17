@@ -61,6 +61,9 @@ import { OrganizationsModule } from './api/organizations/organizations.module';
 import { OrganizationInvites } from './api/organizations/entities/organization-invites.entity';
 import { redisStore } from 'cache-manager-redis-yet';
 import { CacheModule } from '@nestjs/cache-manager';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const sensitiveKeys = [
   /cookie/i,

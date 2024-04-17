@@ -9,7 +9,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       database: process.env.DATABASE_NAME || 'laudspeaker',
       ssl: process.env.DATABASE_SSL === 'true' ? true : false,
       username: process.env.DATABASE_USER || 'postgres',
-      password: process.env.DATABASE_PASSWORD || 'postgres',
+      password: process.env.DATABASE_PASSWORD || '',
       entities: ['dist/**/*.entity.{ts,js}'],
       migrations: ['dist/**/migrations/*.{ts,js}'],
       migrationsTableName: 'typeorm_migrations',

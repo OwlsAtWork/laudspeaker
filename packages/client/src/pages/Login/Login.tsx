@@ -139,12 +139,12 @@ const Login: FC<LoginProps> = ({ setShowWelcomeBanner }) => {
         </form>
         <p className="flex items-center !text-[14px]">
           Don't have an account?
-          <CustomLink
-            href="/signup"
-            className="font-roboto !text-[14px] !leading-[22px] underline text-[#6366F1] m-[0_5px]"
+          <Link
+            to="/signup"
+            className="font-roboto underline font-medium text-[#6366F1] hover:text-[#818CF8]"
           >
             Sign up
-          </CustomLink>
+          </Link>
         </p>
         <div className="relative w-full">
           <div className="absolute inset-0 flex items-center">

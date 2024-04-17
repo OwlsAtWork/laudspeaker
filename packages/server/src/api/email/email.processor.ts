@@ -34,8 +34,8 @@ export class MessageProcessor extends WorkerHost {
   private MAXIMUM_PUSH_LENGTH = 256;
   private MAXIMUM_PUSH_TITLE_LENGTH = 48;
   private tagEngine = new Liquid();
-  private phClient = new PostHog(process.env.POSTHOG_KEY, {
-    host: process.env.POSTHOG_HOST,
+  private phClient = new PostHog(process.env.POSTHOG_API_KEY, {
+    host: process.env.POSTHOG_HOST_URL,
   });
   private messagesMap: Record<
     MessageType,
