@@ -6,7 +6,7 @@ import posthog from "posthog-js";
 import laudspeakerLogo from "../../assets/images/laudspeaker.svg";
 import Tooltip from "components/Elements/Tooltip";
 import { toast } from "react-toastify";
-import Link from "components/Link/Link";
+import { Link } from "react-router-dom";
 import { AxiosError } from "axios";
 import githubIcon from "../../assets/images/github.svg";
 import googleIcon from "../../assets/images/google.svg";
