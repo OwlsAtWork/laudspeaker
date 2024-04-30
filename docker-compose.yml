@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
       POSTGRES_DB: laudspeaker
     ports:
-      - "5432:5432"
+      - "5431:5432"
     restart: unless-stopped
     networks:
       - laudspeaker_default
@@ -163,7 +163,7 @@ services:
     command: "server /data --console-address :9123"
     ports:
       - "9123:9123"
-      - "9001:9000"
+      - "9002:9000"
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
