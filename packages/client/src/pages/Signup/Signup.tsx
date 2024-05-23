@@ -429,7 +429,7 @@ const Signup: FC<SignupProps> = ({ fromInvite, setShowWelcomeBanner }) => {
             <p>
               Already have an account?
               <Link
-                href="/login"
+                to="/login"
                 className="underline font-roboto !text-[14px] leading-[22px] text-[#6366F1] m-[0_5px]"
               >
                 Login

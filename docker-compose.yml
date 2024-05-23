@@ -7,15 +7,17 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
-    environment:
-      - REDIS_REPLICATION_MODE=master
-    healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
-      interval: 5s
-      timeout: 2s
-      retries: 20
+    # environment:
+    #   - REDIS_REPLICATION_MODE=master
+    # healthcheck:
+    #   test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+    #   interval: 50s
+    #   timeout: 2s
+    #   retries: 20
     networks:
       - laudspeaker_default
+    volumes:
+      - redis_data:/data
 
   postgres:
     image: postgres:14.4-alpine
@@ -30,6 +32,9 @@ services:
     restart: unless-stopped
     networks:
       - laudspeaker_default
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
 
   mongo:
     image: "mongo:latest"
@@ -54,6 +59,8 @@ services:
       retries: 20
     networks:
       - laudspeaker_default
+    volumes:
+      - mongo_data:/data/db
 
   clickhouse:
     hostname: clickhouse
@@ -137,6 +144,18 @@ services:
       - /opt/bitnami/kafka/bin/connect-distributed.sh /opt/bitnami/kafka-connect/connect.properties
   #### END kafka connect related containers
 
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka1:19092
+    networks:
+      - laudspeaker_default
+    
   init-environment:
     build:
       context: ./local-env/
@@ -268,37 +287,42 @@ services:
     networks:
       - laudspeaker_default
 
-  redis-gui:
-    container_name: redis-gui
-    image: redis/redisinsight:latest
-    profiles:
-      - gui
-    ports:
-      - 8091:5540
-    depends_on:
-      redis:
-        condition: service_healthy
-    healthcheck:
-      test: wget --no-verbose --tries=1 --spider http://localhost:5540/healthcheck || exit 1
-    networks:
-      - laudspeaker_default
+  # redis-gui:
+  #   container_name: redis-gui
+  #   image: redis/redisinsight:latest
+  #   profiles:
+  #     - gui
+  #   ports:
+  #     - 8091:5540
+  #   depends_on:
+  #     redis:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: wget --no-verbose --tries=1 --spider http://localhost:5540/healthcheck || exit 1
+  #   networks:
+  #     - laudspeaker_default
 
-  init-guis:
-    profiles:
-      - gui
-    build:
-      context: ./local-env/
-      dockerfile: Dockerfile.initenv
-    container_name: init-gui
-    depends_on:
-      redis-gui:
-        condition: service_healthy
-    networks:
-      - laudspeaker_default
-    command:
-      - "guis"
+  # init-guis:
+  #   profiles:
+  #     - gui
+  #   build:
+  #     context: ./local-env/
+  #     dockerfile: Dockerfile.initenv
+  #   container_name: init-gui
+  #   depends_on:
+  #     redis-gui:
+  #       condition: service_healthy
+  #   networks:
+  #     - laudspeaker_default
+  #   command:
+  #     - "guis"
 
 networks:
   laudspeaker_default:
     driver: bridge
     name: laudspeaker_default
+
+volumes:
+  redis_data:
+  postgres_data:
+  mongo_data:

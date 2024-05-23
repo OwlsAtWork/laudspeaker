@@ -5203,12 +5203,13 @@ export class CustomersService {
 
     const query: any = { workspaceId: workspace.id };
 
-    const deviceTokenConditions = {
-      $or: [
-        { androidDeviceToken: { $exists: true, $ne: '' } },
-        { iosDeviceToken: { $exists: true, $ne: '' } },
-      ],
-    };
+    //Removed mobile device tokens
+    // const deviceTokenConditions = {
+    //   $or: [
+    //     { androidDeviceToken: { $exists: true, $ne: '' } },
+    //     { iosDeviceToken: { $exists: true, $ne: '' } },
+    //   ],
+    // };
 
     const pk = await this.CustomerKeysModel.findOne({
       isPrimary: true,
@@ -5228,10 +5229,12 @@ export class CustomersService {
         ],
       };
 
-      query['$and'] = [deviceTokenConditions, searchConditions];
-    } else {
-      query['$or'] = deviceTokenConditions['$or'];
-    }
+      query['$and'] = [searchConditions];
+    } 
+    // else {
+    //   query['$or'] = deviceTokenConditions['$or'];
+    // }
+    console.log("query...", JSON.stringify(query))
 
     const totalCustomers = await this.CustomerModel.count(query).exec();
     const totalPages = Math.ceil(totalCustomers / take) || 1;
@@ -5241,6 +5244,8 @@ export class CustomersService {
       .limit(take <= 100 ? take : 100)
       .lean()
       .exec();
+    
+    console.log("customers...", customers)
 
     return {
       data: customers.map((cust) => {
