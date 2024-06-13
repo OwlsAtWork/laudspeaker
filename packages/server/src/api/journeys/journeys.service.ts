@@ -1538,7 +1538,7 @@ export class JourneysService {
       ) {
         await queryRunner.manager.save(Journey, {
           ...journey,
-          enrollment_count: journey.enrollment_count + 1,
+          enrollment_count: journey.enrollment_count + count,
           last_enrollment_timestamp: Date.now(),
           isActive: true,
           startedAt: new Date(Date.now()),

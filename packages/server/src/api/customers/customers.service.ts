@@ -5244,8 +5244,6 @@ export class CustomersService {
       .limit(take <= 100 ? take : 100)
       .lean()
       .exec();
-    
-    console.log("customers...", customers)
 
     return {
       data: customers.map((cust) => {
