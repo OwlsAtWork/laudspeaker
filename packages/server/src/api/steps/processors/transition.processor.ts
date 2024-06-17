@@ -960,6 +960,8 @@ export class TransitionProcessor extends WorkerHost {
               audienceId: step.id,
               customerId: customer._id,
               accountId: owner.id,
+              journeyName: journey.name,
+              journeyId: journey.id
             });
           }
           break;
@@ -1216,6 +1218,7 @@ export class TransitionProcessor extends WorkerHost {
     location: JourneyLocation,
     event?: string
   ) {
+    console.warn("")
     let job, nextStep;
     if (
       Date.now() - location.stepEntry >

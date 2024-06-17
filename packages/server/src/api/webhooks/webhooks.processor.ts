@@ -146,6 +146,17 @@ export class WebhooksProcessor extends WorkerHost {
     });
     const workspace = account?.teams?.[0]?.organization?.workspaces?.[0];
 
+    const laudspeakerData = {
+      laudspeakerCustomerId: job.data.customerId,
+      laudspeakerJourneyId: job.data.journeyId,
+      laudspeakerJourneyName: job.data.journeyName,
+      laudspeakerStepId: job.data.audienceId
+    }
+    const payload = {
+      ...JSON.parse(body), 
+      ...laudspeakerData
+    }
+
     let retriesCount = 0;
     let success = false;
 
@@ -158,7 +169,7 @@ export class WebhooksProcessor extends WorkerHost {
       try {
         const res = await fetch(url, {
           method,
-          body,
+          body: JSON.stringify(payload),
           headers,
         });
 

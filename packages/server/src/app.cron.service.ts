@@ -446,6 +446,7 @@ export class CronService {
               undefined,
               queryRunner
             );
+            // Added uuid in ownerId to create unique Job Id everytime to re run the jounrney flow, as BullMq queue was not consuming the same job id again. 
             timeBasedJobs.push({
               name: String(step.type),
               data: {
@@ -466,7 +467,7 @@ export class CronService {
               opts: {
                 jobId: generateUniqueJobId({
                   step: step,
-                  ownerID: step.workspace.organization.owner.id,
+                  ownerID: step.workspace.organization.owner.id+randomUUID(),
                   journeyID: journeys[journeyIndex].id,
                   customerID: locations[locationsIndex].customer,
                 }),

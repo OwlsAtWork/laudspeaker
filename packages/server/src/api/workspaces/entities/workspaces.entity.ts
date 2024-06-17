@@ -144,8 +144,8 @@ export class Workspaces extends BaseEntity {
   @Column({
     type: 'jsonb',
     default: {
-      [PushPlatforms.IOS]: undefined,
-      [PushPlatforms.ANDROID]: undefined,
+      iOS: undefined,
+      Android: undefined,
     },
   })
   public pushPlatforms: PushFirebasePlatforms;
